@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import themeFile  from './utils/theme'
 import "./App.css";
 
 import Home from "./pages/Home";
@@ -8,23 +9,13 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 
-const theme = createMuiTheme({
-  primary: {
-    light: "#33c9dc", 
-    main: "#00bcd4",
-    dark: "#008394",
-    contrastText: "#fff",
-  },
-  secondary: {
-    light: "#ff6333",
-    main: "#ff3d00",
-    dark: "#b22a00",
-    contrastText: "#fff",
-  },
-  typography: {
-    useNextVariants: true,
-  },
-});
+const theme = createMuiTheme(themeFile);
+
+const token = localStorage.FBIdToken;
+
+if(token){
+
+}
 
 class App extends Component {
   state = {};
