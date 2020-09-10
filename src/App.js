@@ -1,20 +1,35 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import themeFile  from './utils/theme'
+import themeFile from "./utils/theme";
 import "./App.css";
+import jwtDecode from "jwt-decode";
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
+import AuthRoute from "./utils/AuthRoute";
 
 const theme = createMuiTheme(themeFile);
 
-const token = localStorage.FBIdToken;
+const token = localStorage.FBIToken;
 
-if(token){
-
+let authenticated;
+if (token) {
+  const decodedToken = jwtDecode(token);
+  if (decodedToken.exp) {
+    const decodedToken = localStorage.FBIToken;
+    if (decodedToken.exp * 1000 < Date.now()) {
+      window.location.href = "/login";
+      authenticated = false;
+    } else {
+      authenticated = true;
+    }
+  }
 }
 
 class App extends Component {
@@ -22,18 +37,28 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <div className="App">
-          <Router>
-            <Navbar />
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/signup" component={Signup} />
-                <Route exact path="/login" component={Login} />
-              </Switch>
-            </div>
-          </Router>
-        </div>
+        <Provider store={store}>
+            <Router>
+              <Navbar />
+              <div className="container">
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <AuthRoute
+                    exact
+                    path="/signup"
+                    component={Signup}
+                    authenticated={authenticated}
+                  />
+                  <AuthRoute
+                    exact
+                    path="/login"
+                    component={Login}
+                    authenticated={authenticated}
+                  />
+                </Switch>
+              </div>
+            </Router>
+         </Provider>
       </ThemeProvider>
     );
   }
