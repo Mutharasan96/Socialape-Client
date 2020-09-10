@@ -1,25 +1,33 @@
 import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from "../type";
-
-export const loginUser = (userData) => (dispatch) => {
+import axios from "axios";
+export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post("/login", userData)
+    .post("/login", userData) 
     .then((res) => {
-      console.log(res.data);
-      this.setState({
-        loading: false,
-      });
       const FBIToken = `Bearer ${res.data.token}`;
       localStorage.setItem("FBIToken", `Bearer ${res.data.token}`);
       axios.defaults.headers.common["Authorization"] = FBIToken;
+      dispatch(getUserData())
+      dispatch({type: CLEAR_ERRORS})
       this.props.history.push("/");
     })
     .catch((err) => {
-      this.setState({
-        errors: err.response.data,
-        loading: false,
-      });
+      dispatch({
+          type:SET_ERRORS,
+          payload:err.res.data
+      })
     });
 };
 
-export const getUserData = () => (dispatch) => {};
+export const getUserData = () => (dispatch) => {
+  axios
+    .get("/user")
+    .then((res) => {
+      dispatch({
+        type: SET_USER,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.err(err));
+};
