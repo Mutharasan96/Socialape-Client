@@ -3,21 +3,43 @@ import axios from "axios";
 export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post("/login", userData) 
+    .post("/login", userData)
     .then((res) => {
-      const FBIToken = `Bearer ${res.data.token}`;
-      localStorage.setItem("FBIToken", `Bearer ${res.data.token}`);
-      axios.defaults.headers.common["Authorization"] = FBIToken;
-      dispatch(getUserData())
-      dispatch({type: CLEAR_ERRORS})
-      this.props.history.push("/");
+      setAuthorizationHeader(res.data.token)
+      dispatch(getUserData());
+      dispatch({ type: CLEAR_ERRORS });
+      history.push("/");
     })
     .catch((err) => {
       dispatch({
-          type:SET_ERRORS,
-          payload:err.res.data
-      })
+        type: SET_ERRORS,
+        payload: err.response.data,
+      });
     });
+};
+
+export const signupuser = (newUserData, history) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post("/signup", newUserData)
+    .then((res) => {
+      setAuthorizationHeader(res.data.token)
+      dispatch(getUserData());
+      dispatch({ type: CLEAR_ERRORS });
+      history.push("/");
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
+
+const setAuthorizationHeader = (token) => {
+  const FBIToken = `Bearer ${token}`;
+  localStorage.setItem("FBIToken", FBIToken);
+  axios.defaults.headers.common["Authorization"] = FBIToken;
 };
 
 export const getUserData = () => (dispatch) => {
