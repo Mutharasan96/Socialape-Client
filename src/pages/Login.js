@@ -30,6 +30,12 @@ class Login extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
+  }
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -42,7 +48,7 @@ class Login extends Component {
       password: this.state.password,
     };
     this.props.loginUser(userData, this.props.history);
-  }; 
+  };
   render() {
     const {
       classes,
@@ -123,10 +129,11 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-const mapsActionsToProps = {
+const mapActionsToProps = {
   loginUser,
 };
 
-export default connect( mapStateToProps, mapsActionsToProps )(
-  withStyles(styles)(Login)
-);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(Login));
