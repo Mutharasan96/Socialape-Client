@@ -8,12 +8,15 @@ import jwtDecode from "jwt-decode";
 // Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './redux/type'
+import { logoutUser, getUserData } from './redux/actions/userActions'
 
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import AuthRoute from "./utils/AuthRoute";
+import axios from "axios";
 
 const theme = createMuiTheme(themeFile);
 
@@ -25,10 +28,12 @@ if (token) {
   if (decodedToken.exp) {
     const decodedToken = localStorage.FBIToken;
     if (decodedToken.exp * 1000 < Date.now()) {
+      store.dispatch(logoutUser())
       window.location.href = "/login";
-      authenticated = false;
     } else {
-      authenticated = true;
+      store.dispatch({ type: SET_AUTHENTICATED })
+      axios.defaults.headers.common['Authorization'] = token
+      store.dispatch(getUserData())
     }
   }
 }
@@ -48,13 +53,11 @@ class App extends Component {
                     exact
                     path="/signup"
                     component={Signup}
-                    authenticated={authenticated}
                   />
                   <AuthRoute
                     exact
                     path="/login"
                     component={Login}
-                    authenticated={authenticated}
                   />
                 </Switch>
               </div>

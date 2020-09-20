@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Proptypes from "prop-types";
 import Appicon from "../images/icon.png";
-import axios from "axios";
 import { Link } from "react-router-dom";
 
 // MUI imports
