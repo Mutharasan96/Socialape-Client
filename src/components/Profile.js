@@ -72,16 +72,16 @@ class Profile extends Component {
       user: {
         credentials: { handle, createdAt, imageUrl, bio, website, location },
         loading,
-        authenticated,
-      },
+        authenticated
+      }
     } = this.props;
 
     let profileMarkup = !loading ? (
       authenticated ? (
         <Paper className={classes.paper}>
           <div className={classes.profile}>
-            <div className="profile-image">
-              <img src={imageUrl} alt="profile" />
+            <div className="image-wrapper">
+              <img src={imageUrl} alt="profile" className="profile-image"/>
             </div>
             <hr />
             <div className="profile-details">
@@ -149,13 +149,13 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  user: state.user;
-};
+Profile.prototypes = {
+    user: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+  };
 
-Profile.prototype = {
-  user: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-};
+const mapStateToProps = (state) => ({
+  user: state.user
+});
 
 export default connect(mapStateToProps)(withStyles(styles)(Profile));
