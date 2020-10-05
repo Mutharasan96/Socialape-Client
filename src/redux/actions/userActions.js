@@ -74,7 +74,7 @@ export const uploadImage = (formData) => (dispatch) => {
     .then(() => {
       dispatch(getUserData());
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.response));
 };
 
 const setAuthorizationHeader = (token) => {
@@ -82,5 +82,3 @@ const setAuthorizationHeader = (token) => {
   localStorage.setItem("FBIToken", FBIToken);
   axios.defaults.headers.common["Authorization"] = FBIToken;
 };
-
-
