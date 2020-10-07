@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
 
+// Redux 
+import { connect } from "react-redux";
 import { editUserDetails } from "../redux/actions/userActions";
 
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
+// Icons
+import EditIcon from '@material-ui/iconsEdit'
 
 // MUI from Dialog 
 import Button from '@material-ui/core/Button';
