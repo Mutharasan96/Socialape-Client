@@ -2,6 +2,7 @@ import React, { Component, Fragment, createRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import EditDetails from './EditDetails'
 // MUI stuffs
 import withStyles from "@material-ui/core/styles/withStyles";
 import MuiLink from "@material-ui/core/Link";
@@ -21,7 +22,6 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
 // Redux stuff
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
-import { KeyboardReturn } from "@material-ui/icons";
 
 const styles = (theme) => ({
   paper: {
@@ -152,6 +152,7 @@ class Profile extends Component {
                 <KeyboardReturn color="primary" />
               </IconButton>
             </Tooltip>
+
           </div>
         </Paper>
       ) : (
